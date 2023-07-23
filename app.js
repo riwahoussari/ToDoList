@@ -19,7 +19,7 @@ const lists = [
     }
 ]
 async function main(func, listName, id) {
-    await mongoose.connect('mongodb://127.0.0.1:27017/toDoListDB');
+    await mongoose.connect('mongodb+srv://admin-riwa:riwa1234@cluster0.tnkueke.mongodb.net/toDoListDB');
 
     if(func === 'get'){
         let model;
@@ -100,6 +100,6 @@ app.post('/nav', function(req, res){
     }
 })
 //////////
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log('server up and running on port 3000')
 })
