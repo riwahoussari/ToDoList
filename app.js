@@ -70,14 +70,10 @@ app.get('/:pageName', function(req, res){
 // add list item
 app.post('/', function(req, res){
     let referer = req.get('referer').split('/')
-    referer = referer[referer.length - 1]
-    console.log(referer)
+    referer = referer[referer.length - 1].split('%20').join(' ')
     if(referer === ''){
         referer = 'main'
-    }else{
-        referer = referer.split('%20').join(' ')
     }
-    console.log(referer)
     let newItem = req.body.newItem
     lists.forEach((list)=>{
         if(list.name === referer){
@@ -86,22 +82,15 @@ app.post('/', function(req, res){
         }
     })
     res.redirect(`/${referer}`)
-    // res.redirect('/main')
 })
 // delete list item
 app.post('/delete', function(req, res){
     let id = req.body.id
     let referer = req.get('referer').split('/')
-    referer = referer[referer.length - 1]
-    console.log(referer)
+    referer = referer[referer.length - 1].split('%20').join(' ')
     if(referer === ''){
         referer = 'main'
-    }else{
-        referer = referer.split('%20').join(' ')
     }
-    console.log(referer)
-    // referer = referer[referer.length - 1].replaceAll('%20' , ' ')
-    // if(!referer){referer = 'main'}
     main('dl', referer, id)
     res.redirect(`/${referer}`)
 })
@@ -116,5 +105,5 @@ app.post('/nav', function(req, res){
 })
 //////////
 app.listen(process.env.PORT || 3000, function(){
-    console.log('server up and running on port 3000')
+    console.log('server up and running')
 })
