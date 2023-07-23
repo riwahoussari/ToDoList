@@ -11,7 +11,7 @@ html {
 h1, h2 {
   color: #fff;
   padding: 10px;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .box {
@@ -103,8 +103,10 @@ input[type="text"]:focus {
 
 footer {
   color: white;
-  color: rgba(0, 0, 0, 0.5);
-  text-align: center;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  
 }
 
 button{
@@ -130,9 +132,9 @@ button{
 }
 
 #newForm{
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   background-color: white;
   padding: 20px;
   margin: 0;
@@ -181,4 +183,17 @@ button{
 }
 #newForm:hover button:hover, #newForm.hover button:hover{
   background-color: #694f95;
+}
+
+#aboutBox{
+  max-width: 400px;
+  text-align: center;
+  padding: 30px;
+  margin: auto;
+  background-color: white;
+  color: #A683E3;
+  opacity: 1;
+}#aboutBox p{
+  margin: 0;
+  padding: 0;
 }
