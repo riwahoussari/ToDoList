@@ -75,7 +75,7 @@ app.post('/', function(req, res){
     if(referer === ''){
         referer = 'main'
     }else{
-        referer = referer.replaceAll('%20', ' ')
+        referer = referer.split('%20').join(' ')
     }
     console.log(referer)
     let newItem = req.body.newItem
@@ -96,6 +96,8 @@ app.post('/delete', function(req, res){
     console.log(referer)
     if(referer === ''){
         referer = 'main'
+    }else{
+        referer = referer.split('%20').join(' ')
     }
     console.log(referer)
     // referer = referer[referer.length - 1].replaceAll('%20' , ' ')
