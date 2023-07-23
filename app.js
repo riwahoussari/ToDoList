@@ -71,9 +71,12 @@ app.get('/:pageName', function(req, res){
 app.post('/', function(req, res){
     let referer = req.get('referer').split('/')
     console.log(referer)
-    console.log(referer[referer.length - 1])
-    // referer = referer[referer.length - 1].replaceAll('%20', ' ')
-    // if(!referer){referer = 'main'}
+    if(referer === ''){
+        referer = 'main'
+    }else{
+        referer = referer[referer.length - 1].replaceAll('%20', ' ')
+    }
+    console.log(referer)
     // let newItem = req.body.newItem
     // lists.forEach((list)=>{
     //     if(list.name === referer){
@@ -88,8 +91,15 @@ app.post('/', function(req, res){
 app.post('/delete', function(req, res){
     let id = req.body.id
     let referer = req.get('referer').split('/')
-    referer = referer[referer.length - 1].replaceAll('%20' , ' ')
-    if(!referer){referer = 'main'}
+    console.log(referer)
+    if(referer === ''){
+        referer = 'main'
+    }else{
+        referer = referer[referer.length - 1].replaceAll('%20', ' ')
+    }
+    console.log(referer)
+    // referer = referer[referer.length - 1].replaceAll('%20' , ' ')
+    // if(!referer){referer = 'main'}
     main('dl', referer, id)
     res.redirect(`/${referer}`)
 })
