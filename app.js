@@ -74,6 +74,8 @@ app.post('/', function(req, res){
     console.log(referer)
     if(referer === ''){
         referer = 'main'
+    }else{
+        referer = referer.replaceAll('%20', ' ')
     }
     console.log(referer)
     let newItem = req.body.newItem
