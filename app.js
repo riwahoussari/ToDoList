@@ -70,16 +70,19 @@ app.get('/:pageName', function(req, res){
 // add list item
 app.post('/', function(req, res){
     let referer = req.get('referer').split('/')
-    referer = referer[referer.length - 1].replaceAll('%20', ' ')
-    if(!referer){referer = 'main'}
-    let newItem = req.body.newItem
-    lists.forEach((list)=>{
-        if(list.name === referer){
-            let item = new list.model ({name: newItem})
-            item.save()
-        }
-    })
-    res.redirect(`/${referer}`)
+    console.log(referer)
+    console.log(referer[referer.length - 1])
+    // referer = referer[referer.length - 1].replaceAll('%20', ' ')
+    // if(!referer){referer = 'main'}
+    // let newItem = req.body.newItem
+    // lists.forEach((list)=>{
+    //     if(list.name === referer){
+    //         let item = new list.model ({name: newItem})
+    //         item.save()
+    //     }
+    // })
+    // res.redirect(`/${referer}`)
+    res.redirect('/main')
 })
 // delete list item
 app.post('/delete', function(req, res){
