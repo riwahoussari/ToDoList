@@ -1,18 +1,30 @@
 <%- include('header') -%>
     <div class="box" id="heading">
-        <h1><%= listTitle %></h1>
+        <h1><%= listTitle %> list</h1>
     </div>
+    <div class="box" id="heading">
+        <h2><%= date %></h2>
+    </div>
+
     <div class="box">
         <% items.forEach((item)=>{ %>
             <div class="item">
                 <input type="checkbox">
-                <p> <%= item %> </p>
+                <p> <%= item.name %> </p>
+                <form action="/delete" method="post">
+                    <input type="text" style="display: none;" name="list" value=<%= listTitle %> >
+                    <button class="rmvBtn" type="submit" name="id" value=<%= item.id %>>-</button>
+                </form>
             </div>
         <% }) %>
         <form action='/' method="post" class="item">
-            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+            <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
             <button type="submit" name="list" value=<%= listTitle %>>+</button>
         </form>
     </div>
+    <form action="/new" method="post" id="newForm">
+        <input type="text" id="newInp" placeholder="List Name" name="newList" required>
+        <button id="newBtn" type="submit">Create New List</button>
+    </form>
 
 <%- include('footer') -%>
