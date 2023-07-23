@@ -171,14 +171,14 @@ button{
   font-weight: bold;
   border: none;
 }
-#newForm:hover{
+#newForm:hover, #newForm.hover{
   padding: 20px;
-}#newForm:hover input{
+}#newForm:hover input, #newForm.hover input{
   display: unset;
-}#newForm:hover button{
+}#newForm:hover button, #newForm.hover button{
   background-color: #A683E3;
   color: white;
 }
-#newForm:hover button:hover{
+#newForm:hover button:hover, #newForm.hover button:hover{
   background-color: #694f95;
 }

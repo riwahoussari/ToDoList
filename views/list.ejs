@@ -12,19 +12,29 @@
                 <input type="checkbox">
                 <p> <%= item.name %> </p>
                 <form action="/delete" method="post">
-                    <input type="text" style="display: none;" name="list" value=<%= listTitle %> >
+                    <input type="text" style="display: none;" name="list" value=<%= camelName %> >
                     <button class="rmvBtn" type="submit" name="id" value=<%= item.id %>>-</button>
                 </form>
             </div>
         <% }) %>
         <form action='/' method="post" class="item">
             <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
-            <button type="submit" name="list" value=<%= listTitle %>>+</button>
+            <button type="submit" name="list" value=<%= camelName %>>+</button>
         </form>
     </div>
     <form action="/new" method="post" id="newForm">
         <input type="text" id="newInp" placeholder="List Name" name="newList" required>
-        <button id="newBtn" type="submit">Create New List</button>
+        <button id="newBtn" type="submit" name="list" value=<%= camelName %>>Navigate Lists</button>
     </form>
+    <script>
+        let input = document.getElementById('newInp')
+        let form = document.getElementById('newForm')
+        input.addEventListener('focus', ()=>{
+            form.classList.add('hover')
+        })
+        input.addEventListener('focusout', ()=>{
+            form.classList.remove('hover')
+        })
+    </script>
 
 <%- include('footer') -%>
