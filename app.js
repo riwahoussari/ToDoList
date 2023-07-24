@@ -11,6 +11,9 @@ main('').catch(err => console.log(err));
 const itemSchema = new mongoose.Schema({
     name: String
 })
+async function main() {
+    await mongoose.connect('mongodb+srv://admin-riwa:riwa1234@cluster0.tnkueke.mongodb.net/toDoListDB');
+}
 
 const lists = [
     {
@@ -18,50 +21,28 @@ const lists = [
         model: mongoose.model('item', itemSchema)
     }
 ]
-async function main(func, listName, id) {
-    await mongoose.connect('mongodb+srv://admin-riwa:riwa1234@cluster0.tnkueke.mongodb.net/toDoListDB');
-
-    if(func === 'get'){
-        let model;
-        lists.forEach((list)=>{
-            if(list.name === listName){model = list.model}
-        })
-        if(!model){
-            lists.push({
-                name: listName,
-                model: mongoose.model(`${listName}item`, itemSchema)
-            })
-            model = lists[lists.length - 1].model
-        }
-        return await model.find()
-    }
-    if(func === 'dl'){
-        let model;
-        lists.forEach((list)=>{
-            if(list.name === listName){
-                model = list.model
-            }
-        })
-        await model.deleteOne({_id: id})
-    }
-}
 
 //get requests
 app.get('/', function(req, res){
-    let items = main("get" ,"main")
-    items.then(function(result) {
-        res.render('list' , {listTitle: 'main', items: result, date: myModule.getDate()})
+    let model = lists[0].model
+    model.find().then((items)=>{
+        res.render('list' , {listTitle: 'main', items: items, date: myModule.getDate()})
     })
 })
-app.get('/about', function(req, res){
-    res.render('about')
-})
-app.get('/:pageName', function(req, res){
-    let pageName = req.params.pageName
-    if(pageName !== 'about'){
-        let items = main("get", pageName)
-        items.then(function(result) {
-            res.render('list' , {listTitle: pageName, items: result, date: myModule.getDate()})
+app.get('/:pageName', (req, res)=>{
+    let rqName = req.params.pageName
+    if(rqName === 'about'){res.render('about')}
+    else{
+        let list = lists.find((list) => list.name === rqName)
+        if(!list){
+            list = {
+                name: rqName,
+                model: mongoose.model(`${rqName}item`, itemSchema)
+            }
+            lists.push(list)
+        }
+        list.model.find().then((items)=>{
+            res.render('list' , {listTitle: rqName, items: items, date: myModule.getDate()})
         })
     }
 })
@@ -69,30 +50,28 @@ app.get('/:pageName', function(req, res){
 //post requests
 // add list item
 app.post('/', function(req, res){
-    let referer = req.get('referer').split('/')
-    referer = referer[referer.length - 1].split('%20').join(' ')
-    if(referer === ''){
-        referer = 'main'
-    }
-    let newItem = req.body.newItem
-    lists.forEach((list)=>{
-        if(list.name === referer){
-            let item = new list.model ({name: newItem})
-            item.save()
-        }
+    let listName = req.get('referer').split('/')
+    listName = listName[listName.length - 1].split('%20').join(' ')
+    if(listName === ''){listName = 'main'}
+
+    let list = lists.find((list) => list.name === listName)
+    let rqItem = req.body.newItem
+    let newItem = new list.model ({name: rqItem})
+    newItem.save().then(()=>{
+        res.redirect(`/${listName}`)
     })
-    res.redirect(`/${referer}`)
 })
 // delete list item
 app.post('/delete', function(req, res){
+    let listName = req.get('referer').split('/')
+    listName = listName[listName.length - 1].split('%20').join(' ')
+    if(listName === ''){listName = 'main'}
+    
     let id = req.body.id
-    let referer = req.get('referer').split('/')
-    referer = referer[referer.length - 1].split('%20').join(' ')
-    if(referer === ''){
-        referer = 'main'
-    }
-    main('dl', referer, id)
-    res.redirect(`/${referer}`)
+    let list = lists.find((list) => list.name === listName)
+    list.model.deleteOne({_id: id}).then(()=>{
+        res.redirect(`/${listName}`)
+    })
 })
 // navigate lists
 app.post('/nav', function(req, res){
